@@ -5,55 +5,27 @@ set modelines=0
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
-
-" let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
-
-" The following are examples of different formats supported.
-" Keep Plugin commands between vundle#begin/end.
-" plugin on GitHub repo
 Plugin 'tpope/vim-fugitive'
-" plugin from http://vim-scripts.org/vim/scripts.html
-" Plugin 'L9'
-" git repos on your local machine (i.e. when working on your own plugin)
-"Plugin 'file:///home/philipp/.vim/git'
-" The sparkup vim script is in a subdirectory of this repo called vim.
-" Pass the path to set the runtimepath properly.
 Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
-" Install L9 and avoid a Naming conflict if you've already installed a
-" different version somewhere else.
-" Plugin 'ascenator/L9', {'name': 'newL9'}
-" Plugin for colorscheme
 Plugin 'morhetz/gruvbox'
-" Plugin for treesearch and view
 Plugin 'scrooloose/nerdtree'
-" Plugin for commenting out multiple lines
 Plugin 'scrooloose/nerdcommenter'
-" Fuzzy finder
-" " Plugin 'vincent/command-t'
-" Plugin 'atom/fuzzy-finder' " does not work in fedora?
 Plugin 'ctrlpvim/ctrlp.vim'
-" All of your Plugins must be added before the following line
+"Plugin 'fortran.vim'
+Plugin 'w0rp/ale'
 call vundle#end()            " required
 filetype plugin indent on    " required
 " To ignore plugin indent changes, instead use:
 "filetype plugin on
 "
-" Brief help
-" :PluginList       - lists configured plugins
-" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
-" :PluginSearch foo - searches for foo; append `!` to refresh local cache
-" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
-"
-" see :h vundle for more details or wiki for FAQ
-" Put your non-Plugin stuff after this line
 " my colorsheme
 let g:gruvbox_italic=1
 let g:gruvbox_contrast_dark='hard'
 let g:gruvbox_italicize_comments=1
-set termguicolors
+if ('+termguicolors')
+	set termguicolors
+endif
 set background=dark "setting dark mode
 colorscheme gruvbox
 "-------------------------------------------------------------------"
@@ -98,9 +70,7 @@ nnoremap <tab> %
 vnoremap <tab> %
 
 
-set wrap
-set textwidth=79
-set formatoptions=qrn1	
+set nowrap
 set colorcolumn=85 	"show colored line at 85 characters
 
 "disable arrow keys to get used to hjkl move keys
@@ -114,7 +84,14 @@ inoremap <left> <nop>
 inoremap <right> <nop>
 nnoremap j gj
 nnoremap k gk
+" enable mouse scrolling
+:set mouse=a
 
+" ctrl-w then j becomes ctrl-j 
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
 "end of line characters
 set list
 set listchars=tab:▸\ ,eol:¬
@@ -127,7 +104,7 @@ au FocusLost * :wa
 " automatically launch nertree if vim is started without file
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-:map <C-n> : :NERDTree
+:map <C-n> :NERDTree<CR>
 
 " -------------------------------------------------------------------------"
 " ------------ custom commands --------------------------------------------"
@@ -135,4 +112,10 @@ autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 " for custom commands of special languages please use python_vim.rc
 " remap leader key for cutom keys
 let mapleader = ","
-
+map <F8> <Esc>:w<CR>:!make && mpirun -n 4 ./sPOD sPOD.ini -memory=2GB<CR>
+" -------------------------------------------------------------------------"
+" _Fortran.vim
+" -------------------------------------------------------------------------"
+:let fortran_more_precise=1
+:let fortran_fold=1
+:let fortran_fold_conditionals=1
