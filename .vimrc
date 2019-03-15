@@ -7,15 +7,16 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'tpope/vim-fugitive'
+Plugin 'valloric/youcompleteme'
 Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
 Plugin 'morhetz/gruvbox'
 Plugin 'scrooloose/nerdtree'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'ctrlpvim/ctrlp.vim'
 "Plugin 'fortran.vim'
-Plugin 'lervag/vimtex'
 Plugin 'w0rp/ale'
 Plugin 'xuhdev/vim-latex-live-preview'
+Plugin 'lervag/vimtex'
 call vundle#end()            " required
 filetype plugin indent on    " required
 " To ignore plugin indent changes, instead use:
@@ -126,3 +127,8 @@ map <F8> <Esc>:w<CR>:!make && mpirun -n 4 ./sPOD sPOD.ini -memory=2GB<CR>
 " -------------------------------------------------------------------------"
 let g:livepreview_previewer='okular'
 autocmd Filetype tex setl updatetime=1
+
+if !exists('g:ycm_semantic_triggers')
+	let g:ycm_semantic_triggers = {}
+endif
+let g:ycm_semantic_triggers.tex = g:vimtex#re#youcompleteme
