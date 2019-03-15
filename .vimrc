@@ -13,7 +13,9 @@ Plugin 'scrooloose/nerdtree'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'ctrlpvim/ctrlp.vim'
 "Plugin 'fortran.vim'
+Plugin 'lervag/vimtex'
 Plugin 'w0rp/ale'
+Plugin 'xuhdev/vim-latex-live-preview'
 call vundle#end()            " required
 filetype plugin indent on    " required
 " To ignore plugin indent changes, instead use:
@@ -119,3 +121,8 @@ map <F8> <Esc>:w<CR>:!make && mpirun -n 4 ./sPOD sPOD.ini -memory=2GB<CR>
 :let fortran_more_precise=1
 :let fortran_fold=1
 :let fortran_fold_conditionals=1
+" -------------------------------------------------------------------------"
+" Latex
+" -------------------------------------------------------------------------"
+let g:livepreview_previewer='okular'
+autocmd Filetype tex setl updatetime=1
