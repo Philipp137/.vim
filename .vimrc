@@ -11,8 +11,13 @@ Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
 Plugin 'morhetz/gruvbox'
 Plugin 'scrooloose/nerdtree'
 Plugin 'scrooloose/nerdcommenter'
+"Plugin 'scrooloose/syntastic' "check syntax for errors
 Plugin 'ctrlpvim/ctrlp.vim'
 "Plugin 'fortran.vim'
+"Plugin 'valloric/youcompleteme' doesnt work on savart, needs extra
+"installation
+Plugin 'nvie/vim-flake8' " pep8 checking for python
+Plugin 'vim-scripts/indentpython.vim'
 Plugin 'w0rp/ale'
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -25,6 +30,9 @@ let g:gruvbox_contrast_dark='hard'
 let g:gruvbox_italicize_comments=1
 if ('+termguicolors')
 	set termguicolors
+endif
+if $COLORTERM == 'gnome-terminal'
+	  set t_Co=8
 endif
 set background=dark "setting dark mode
 colorscheme gruvbox
@@ -50,6 +58,9 @@ set backspace=indent,eol,start
 set laststatus=2
 set relativenumber
 set undofile " saves an <Filename>.un~ whenever editing a file to undo previous actions even after reopening and closing files
+
+" for ctags
+set tags=.tags;/
 
 " make regexpressions handling easy
 nnoremap / /\v
@@ -106,16 +117,59 @@ autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 :map <C-n> :NERDTree<CR>
 
+" ignore file for nerdtree
+let NERDTreeIgnore=['\.pyc$', '\~$', '\.h5$', '\.o$' ,'\.mod$']  "ignore files in NERDTree
+let NERDTreeSortOrder=['\.f90$']  
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.o,*.mod "ignore files in ctrlp
 " -------------------------------------------------------------------------"
 " ------------ custom commands --------------------------------------------"
 " ------------------------------------------------------------------------"
 " for custom commands of special languages please use python_vim.rc
 " remap leader key for cutom keys
 let mapleader = ","
-map <F8> <Esc>:w<CR>:!make && mpirun -n 4 ./sPOD sPOD.ini -memory=2GB<CR>
+map <F8> <Esc>:w<CR>:!make && mpirun -n 4 ./sPOD sPOD.ini --memory=2GB<CR>
+map <C-F> <Esc>:%s/<old>/<new>/g
 " -------------------------------------------------------------------------"
 " _Fortran.vim
 " -------------------------------------------------------------------------"
 :let fortran_more_precise=1
 :let fortran_fold=1
 :let fortran_fold_conditionals=1
+
+set smarttab
+set expandtab
+set shiftwidth=2
+" -------------------------------------------------------------------------"
+" python.vim
+" -------------------------------------------------------------------------"
+" make python vim pep8 conform
+au BufNewFile,BufRead *.py
+	\ set tabstop=4 |
+	\ set softtabstop=4 |
+	\ set shiftwidth=4 |
+	\ set expandtab |
+	\ set autoindent |
+	\ set fileformat=unix |
+	\ set encoding=utf-8
+
+let python_highlight_all=1
+syntax on
+" -------------------------------------------------------------------------"
+" customizations for youcompleteme:
+" -------------------------------------------------------------------------"
+" ensure that auto complete window goes away when done
+let g:ycm_autoclose_preview_window_after_completion=1
+" shortcut for go to: 
+map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
+
+" -------------------------------------------------------------------------"
+" settings for syntastic 
+" -------------------------------------------------------------------------"
+"set statusline+=%#warningmsg#
+"set statusline+=%{SyntasticStatuslineFlag()}
+"set statusline+=%*
+
+"let g:syntastic_check_on_open = 1
+"let g:syntastic_check_on_wq = 1
+
+
