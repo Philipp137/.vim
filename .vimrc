@@ -7,6 +7,7 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'tpope/vim-fugitive'
+Plugin 'valloric/youcompleteme'
 Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
 Plugin 'morhetz/gruvbox'
 Plugin 'scrooloose/nerdtree'
@@ -19,6 +20,8 @@ Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'nvie/vim-flake8' " pep8 checking for python
 Plugin 'vim-scripts/indentpython.vim'
 Plugin 'w0rp/ale'
+Plugin 'xuhdev/vim-latex-live-preview'
+Plugin 'lervag/vimtex'
 call vundle#end()            " required
 filetype plugin indent on    " required
 " To ignore plugin indent changes, instead use:
@@ -173,3 +176,13 @@ map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
 "let g:syntastic_check_on_wq = 1
 
 
+" -------------------------------------------------------------------------"
+" Latex
+" -------------------------------------------------------------------------"
+let g:livepreview_previewer='okular'
+autocmd Filetype tex setl updatetime=1
+
+if !exists('g:ycm_semantic_triggers')
+	let g:ycm_semantic_triggers = {}
+endif
+let g:ycm_semantic_triggers.tex = g:vimtex#re#youcompleteme
